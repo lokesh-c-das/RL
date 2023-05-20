@@ -1,9 +1,10 @@
 import numpy as np
 
-
-class QLearning:
-    def __int__(self, state_bins, num_action=2):
-        self.q_table = np.zeros(state_bins, (num_action,))
+class QLearning(object):
+    """docstring for QLearning"""
+    def __init__(self, state_bins, num_action=2):
+        super(QLearning, self).__init__()
+        self.q_table = np.zeros(state_bins + (num_action,))
 
     def learn_environment(self, s, a, r, n_s, lr,d_f):
         """

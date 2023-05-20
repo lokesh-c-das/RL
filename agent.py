@@ -17,9 +17,11 @@ import tensorflow as tf
 
 
 # define agent Class
-class Agent:
 
-    def __init__(self, env) -> None:
+class Agent(object):
+    """docstring for Agent"""
+    def __init__(self, env):
+        super(Agent, self).__init__()
         self.env = env
         self.num_states = env.num_of_observation  # number of states
         self.num_actions = env.num_of_action  # num of actions
@@ -42,7 +44,6 @@ class Agent:
         self.logdir = "./logs/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         self.writer = tf.summary.create_file_writer(logdir=self.logdir, name="q_learning")
 
-
     def exploration_exploitation(self, state):
         # get random epsilon value for exploration/explotation
         rand_epsilon = random.uniform(0, 1)
@@ -59,9 +60,9 @@ class Agent:
         """
         Formula: Q(state, action) = old q value + learning rate *(current reward + discount factor* optimal q value from next state-old_q_value)
         """
-        self.learning_rate = self.learning_rate_update(episode)
+        self.learning_rate = learning_rate_update(episode)
         self.q_learning.learn_environment(s=state,a=action,r=reward,n_s=next_state,lr=self.learning_rate,d_f=self.gamma)
-        self.epsilon = self.exploration_rate(episode)
+        self.epsilon = exploration_rate(episode)
 
     def train(self):
         for episode in range(10):

@@ -9,9 +9,9 @@ from typing import Tuple
 import tensorflow as tf
 import datetime
 
-
 class Environment(object):
-    def __int__(self, algo=None, render_mode=None):
+    """docstring for Environment"""
+    def __init__(self, algo=None, render_mode=None):
         super(Environment, self).__init__()
         self.algo = algo
         self.env = gym.make("CartPole-v1", render_mode=render_mode)
@@ -21,17 +21,17 @@ class Environment(object):
         self.action_space = self.env.action_space
         self.state_bins = (3, 6, 6, 12)
 
-    def state_space_to_discrete(self, position, velocity, angle, angular_velocity):
+    def state_space_to_discrete(self, position, velocity, angle, angular_velocity)->tuple[int,...]:
         """Convert continuous state space into a discrete state for Q-Learning"""
         upper_bound = [self.env.observation_space.high[0], 20.0, self.env.observation_space.high[2], math.radians(50)]
         lower_bound = [self.env.observation_space.low[0], -20.0, self.env.observation_space.high[2], -math.radians(50)]
-        binDis = KBinsDiscretizer(n_bins=self.state_bins, encode="original", strategy="uniform")
+        binDis = KBinsDiscretizer(n_bins=self.state_bins, encode="ordinal", strategy="uniform")
         binDis.fit([lower_bound, upper_bound])
         binT = binDis.transform([[position, velocity, angle, angular_velocity]])
         return tuple(map(int, binT[0]))
 
     def env_reset(self):
-        observation = self.env.reset()
+        observation,_ = self.env.reset()
         if self.algo == "Q-Learning":
             return self.state_space_to_discrete(*observation)
         return observation
