@@ -21,3 +21,5 @@ rad.json
 .idea/
 #Test results file
 TestResults.xml
+# log file
+logs/
