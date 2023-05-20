@@ -10,8 +10,9 @@ import tensorflow as tf
 import datetime
 
 
-class Environment:
+class Environment(object):
     def __int__(self, algo=None, render_mode=None):
+        super(Environment, self).__init__()
         self.algo = algo
         self.env = gym.make("CartPole-v1", render_mode=render_mode)
         self.num_of_action = self.env.action_space.n  # number of actions in the environment
@@ -20,7 +21,7 @@ class Environment:
         self.action_space = self.env.action_space
         self.state_bins = (3, 6, 6, 12)
 
-    def state_space_to_discrete(self, position, velocity, angle, angular_velocity) -> tuple[int, ...]:
+    def state_space_to_discrete(self, position, velocity, angle, angular_velocity):
         """Convert continuous state space into a discrete state for Q-Learning"""
         upper_bound = [self.env.observation_space.high[0], 20.0, self.env.observation_space.high[2], math.radians(50)]
         lower_bound = [self.env.observation_space.low[0], -20.0, self.env.observation_space.high[2], -math.radians(50)]

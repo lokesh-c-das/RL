@@ -1,4 +1,6 @@
 import numpy as np
+
+
 class QLearning:
     def __int__(self, state_bins, num_action=2):
         self.q_table = np.zeros(state_bins, (num_action,))
